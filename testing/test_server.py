@@ -17,4 +17,3 @@ class TestServer(object):
     def test_perform_downloads(self, server):
         job = Job(url='https://example.com', dest='/tmp')
         server.add_job(job)
-
