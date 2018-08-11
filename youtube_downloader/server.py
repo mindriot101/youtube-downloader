@@ -16,16 +16,13 @@ class Server(object):
     - start the worker thread waiting for downloads
     '''
 
-    def __init__(self, sleep_time=86400, download_configs=None):
+    def __init__(self, config_file, sleep_time=86400):
         '''
         Construct a server object.
         '''
         self.queue = queue.Queue()
+        self.config_file = config_file
         self.sleep_time = sleep_time
-        if download_configs is None:
-            self.download_configs = []
-        else:
-            self.download_configs = download_configs
         self.download_thread = self.start_download_thread()
 
 
@@ -34,6 +31,10 @@ class Server(object):
         Sleep for the alotted time, then check all of the download
         configs.
         '''
+        while True:
+            time.sleep(self.sleep_time)
+            self.update_configs()
+            self.queue_configs()
 
     def add_job(self, job):
         self.queue.put(job)
@@ -42,4 +43,3 @@ class Server(object):
         download_thread = DownloadThread(self.queue)
         download_thread.start()
         return download_thread
-
