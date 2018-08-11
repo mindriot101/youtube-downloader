@@ -44,8 +44,10 @@ class Server(object):
         with open(self.config_file) as infile:
             config = toml.load(infile)
 
+        jobs = []
         for job in config['jobs']:
-            self.download_jobs_to_enqueue.append(Job(**job))
+            jobs.append(Job(**job))
+        self.download_jobs_to_enqueue = jobs
 
     def queue_configs(self):
         for job in self.download_jobs_to_enqueue:

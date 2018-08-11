@@ -18,6 +18,7 @@ class DownloadThread(threading.Thread):
         while True:
             next_job = self.job_queue.get(block=True)
             self.perform_work(next_job)
+            self.job_queue.task_done()
 
 
     def perform_work(self, job):
