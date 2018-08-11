@@ -9,6 +9,7 @@ setup(
         install_requires=[
             'toml',
             'youtube-dl',
+            'pyzmq',
             ],
         entry_points = {
             'console_scripts': [
