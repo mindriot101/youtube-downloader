@@ -3,6 +3,7 @@ import queue
 import time
 import toml
 from .download_thread import DownloadThread
+from .handler_thread import HandlerThread
 from .job import Job
 
 
@@ -26,6 +27,7 @@ class Server(object):
         self.config_file = config_file
         self.sleep_time = sleep_time
         self.download_thread = self.start_download_thread()
+        self.handler_thread = self.start_handler_thread()
         self.download_jobs_to_enqueue = []
 
 
@@ -61,3 +63,10 @@ class Server(object):
         download_thread = DownloadThread(self.queue)
         download_thread.start()
         return download_thread
+    
+    def start_handler_thread(self):
+        # TODO: pass port down
+        handler_thread = HandlerThread(self)
+        handler_thread.start()
+        return handler_thread
+
