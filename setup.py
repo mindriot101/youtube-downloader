@@ -6,6 +6,10 @@ setup(
         author='Simon Walker',
         author_email='s.r.walker101@googlemail.com',
         packages=find_packages(),
+        install_requires=[
+            'toml',
+            'youtube-dl',
+            ],
         entry_points = {
             'console_scripts': [
                 'yt-server=youtube_downloader.servercli:main',
