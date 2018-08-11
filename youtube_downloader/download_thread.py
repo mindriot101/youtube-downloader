@@ -48,4 +48,4 @@ class DownloadThread(threading.Thread):
 
     @staticmethod
     def compute_output_template(destination):
-        return os.path.join(destination, '%(title)s.%(ext)s')
+        return os.path.join(destination, '%(playlist_index)d-%(title)s.%(ext)s')
