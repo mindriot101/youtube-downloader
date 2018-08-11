@@ -4,14 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ipython = "*"
-ipdb = "*"
 youtube-dl = "*"
 toml = "*"
 
 [dev-packages]
 ipython = "*"
 pytest = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3.7"
