@@ -12,13 +12,13 @@ class HandlerThread(Thread):
         self.daemon = True
         self.server = server
         self.socket = context.socket(zmq.REP)
-        self.socket.bind(f'tcp://*:{port}')
-        print(f'Socket listening on port {port}')
+        self.socket.bind('tcp://*:{port}'.format(port=port))
+        print('Socket listening on port {port}'.format(port=port))
 
     def run(self):
         while True:
             msg = self.socket.recv()
-            print(f'Got message: {msg}')
+            print('Got message: {msg}'.format(msg=msg))
             self.handle_msg(msg)
 
     def handle_msg(self, msg):

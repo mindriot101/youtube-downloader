@@ -39,7 +39,7 @@ class Server(object):
         while True:
             self.update_configs()
             self.queue_configs()
-            print(f'Sleeping for {self.sleep_time} seconds')
+            print('Sleeping for {self.sleep_time} seconds'.format(self=self))
             time.sleep(self.sleep_time)
 
     def update_configs(self):
@@ -53,7 +53,7 @@ class Server(object):
 
     def queue_configs(self):
         for job in self.download_jobs_to_enqueue:
-            print(f'Adding job {job} to the queue')
+            print('Adding job {job} to the queue'.format(job=job))
             self.add_job(job)
 
     def add_job(self, job):
