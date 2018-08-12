@@ -11,6 +11,3 @@ toml = "*"
 ipython = "*"
 pytest = "*"
 ipdb = "*"
-
-[requires]
-python_version = "3.7"
