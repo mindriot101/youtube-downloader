@@ -1,16 +1,15 @@
-from dataclasses import dataclass
 import json
 
 
-@dataclass
-class Job:
+class Job(object):
 
     '''
     Descriptor type for a download job
     '''
 
-    url: str
-    dest: str
+    def __init__(self, url, dest):
+        self.url = url
+        self.dest = dest
 
     def serialize(self):
         return json.dumps(self.__dict__)
@@ -25,3 +24,7 @@ class Job:
     @classmethod
     def deserialize_binary(cls, b):
         return cls.deserialize(b.decode())
+
+    def __repr__(self):
+        return '<Download job {self.url} => {self.dest}>'.format(
+                self=self)
