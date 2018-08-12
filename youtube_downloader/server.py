@@ -48,7 +48,7 @@ class Server(object):
 
         jobs = []
         for job in config['jobs']:
-            jobs.append(Job(**job))
+            jobs.append(Job.from_config(job))
         self.download_jobs_to_enqueue = jobs
 
     def queue_configs(self):

@@ -7,9 +7,16 @@ class Job(object):
     Descriptor type for a download job
     '''
 
+    REQUIRED_KEYS = ['url', 'dest']
+
     def __init__(self, url, dest):
         self.url = url
         self.dest = dest
+
+    @classmethod
+    def from_config(cls, config_entry):
+        params = {key: config_entry[key] for key in cls.REQUIRED_KEYS}
+        return cls(**params)
 
     def serialize(self):
         return json.dumps(self.__dict__)
