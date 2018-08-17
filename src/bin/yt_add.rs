@@ -4,25 +4,11 @@ extern crate structopt;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
+extern crate youtube_downloader;
 
 use structopt::StructOpt;
 use std::error::Error;
-
-#[derive(Debug, Serialize)]
-struct Job {
-    url: String,
-    dest: String,
-}
-
-impl Job {
-    fn new<S>(url: S, dest: S) -> Self
-        where S: Into<String> {
-            Job {
-                url: url.into(),
-                dest: dest.into(),
-            }
-        }
-}
+use youtube_downloader::job::Job;
 
 #[derive(StructOpt)]
 struct Opts {

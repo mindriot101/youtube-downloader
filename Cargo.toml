@@ -13,3 +13,7 @@ serde_json = "1.0.26"
 [[bin]]
 name = "yt-add"
 path = "src/bin/yt_add.rs"
+
+[[bin]]
+name = "yt-server"
+path = "src/bin/yt_server.rs"
