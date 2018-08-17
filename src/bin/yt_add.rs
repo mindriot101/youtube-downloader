@@ -3,11 +3,12 @@ extern crate zmq;
 extern crate structopt;
 #[macro_use]
 extern crate serde_derive;
+extern crate failure;
 extern crate serde_json;
 extern crate youtube_downloader;
 
+use failure::Error;
 use structopt::StructOpt;
-use std::error::Error;
 use youtube_downloader::job::Job;
 
 #[derive(StructOpt)]
@@ -18,7 +19,7 @@ struct Opts {
     dest: String,
 }
 
-fn add_job(job: Job) -> Result<(), Box<Error>> {
+fn add_job(job: Job) -> Result<(), Error> {
     let message = serde_json::to_vec(&job)?;
     let context = zmq::Context::new();
     let socket = context.socket(zmq::SocketType::REQ)?;

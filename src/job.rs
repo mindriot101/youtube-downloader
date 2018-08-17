@@ -6,13 +6,12 @@ pub struct Job {
 
 impl Job {
     pub fn new<S>(url: S, dest: S) -> Self
-        where S: Into<String> {
-            Job {
-                url: url.into(),
-                dest: dest.into(),
-            }
+    where
+        S: Into<String>,
+    {
+        Job {
+            url: url.into(),
+            dest: dest.into(),
         }
+    }
 }
-
-
-

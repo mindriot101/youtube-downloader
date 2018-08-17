@@ -6,10 +6,9 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate youtube_downloader;
 
-use structopt::StructOpt;
-use std::error::Error;
 use std::path::PathBuf;
-use youtube_downloader::job::Job;
+use structopt::StructOpt;
+use youtube_downloader::{job::Job, server::Server};
 
 #[derive(Debug, StructOpt)]
 struct Opts {
@@ -19,7 +18,8 @@ struct Opts {
     sleep_time: u32,
 }
 
-
 fn main() {
     let opts = Opts::from_args();
+    let server = Server::new(opts.config, opts.sleep_time);
+    server.run().unwrap();
 }
