@@ -5,7 +5,12 @@ extern crate structopt;
 extern crate serde_derive;
 extern crate serde_json;
 extern crate youtube_downloader;
+#[macro_use]
+extern crate slog;
+extern crate slog_async;
+extern crate slog_term;
 
+use slog::Drain;
 use std::path::PathBuf;
 use structopt::StructOpt;
 use youtube_downloader::{job::Job, server::Server};
@@ -20,6 +25,12 @@ struct Opts {
 
 fn main() {
     let opts = Opts::from_args();
-    let server = Server::new(opts.config, opts.sleep_time);
+    let decorator = slog_term::TermDecorator::new().build();
+    let drain = slog_term::CompactFormat::new(decorator).build().fuse();
+    let drain = slog_async::Async::new(drain).build().fuse();
+
+    let log = slog::Logger::root(drain, o!("program" => "yt-server"));
+
+    let server = Server::new(opts.config, opts.sleep_time, log);
     server.run().unwrap();
 }

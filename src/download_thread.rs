@@ -1,23 +1,27 @@
 use failure::Error;
 use job::Job;
+use slog::Logger;
 use std::path::Path;
 use std::process::Command;
 use std::sync::mpsc::Receiver;
 
 pub struct DownloadThread {
     rx: Receiver<Job>,
+    log: Logger,
 }
 
 impl DownloadThread {
-    pub fn new(rx: Receiver<Job>) -> Self {
-        DownloadThread { rx }
+    pub fn new(rx: Receiver<Job>, log: Logger) -> Self {
+        DownloadThread { rx, log }
     }
 
     pub fn run(&self) -> Result<(), Error> {
+        let log = self.log.new(o!("stage" => "run"));
         loop {
+            info!(log, "waiting for new download jobs");
             let next_job = self.rx.recv()?;
             match self.perform_work(next_job) {
-                Err(e) => eprintln!("{:?}", e),
+                Err(e) => crit!(log, "failure to download"; "error" => format!("{:?}", e)),
                 Ok(_) => {}
             }
         }
@@ -25,7 +29,10 @@ impl DownloadThread {
     }
 
     fn perform_work(&self, job: Job) -> Result<(), Error> {
+        let log = self.log.new(o!("stage" => "perform_work"));
+
         let output_template = self.compute_output_template(&job.dest)?;
+        info!(log, "downloading");
         let mut cmd = Command::new("youtube-dl")
             .args(&[
                 &job.url,
