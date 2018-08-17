@@ -21,9 +21,13 @@ struct Opts {
     url: String,
     #[structopt(short = "d", long = "dest")]
     dest: String,
+    #[structopt(short = "a", long = "address", default_value = "localhost")]
+    address: String,
+    #[structopt(short = "p", long = "port", default_value = "5505")]
+    port: u64,
 }
 
-fn add_job(job: Job, log: Logger) -> Result<(), Error> {
+fn add_job(job: Job, log: Logger, addr: &str) -> Result<(), Error> {
     info!(log, "adding job"; "job" => format!("{:?}", job));
 
     debug!(log, "deserialising input");
@@ -31,7 +35,6 @@ fn add_job(job: Job, log: Logger) -> Result<(), Error> {
     let context = zmq::Context::new();
     let socket = context.socket(zmq::SocketType::REQ)?;
 
-    let addr = "tcp://127.0.0.1:5505";
     debug!(log, "connecting to ZMQ socket"; "addr" => addr);
     socket.connect(addr)?;
 
@@ -55,6 +58,7 @@ fn main() {
 
     let log = slog::Logger::root(drain, o!("program" => "yt-add"));
 
+    let listen_addr = format!("tcp://{}:{}", opts.address, opts.port);
     let job = Job::new(opts.url, opts.dest);
-    add_job(job, log).unwrap();
+    add_job(job, log, &listen_addr).unwrap();
 }
