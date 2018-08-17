@@ -1,6 +1,7 @@
 use config::Config;
 use download_thread::DownloadThread;
 use failure::Error;
+use handler_thread::HandlerThread;
 use job::Job;
 use slog::Logger;
 use std::path::PathBuf;
@@ -27,6 +28,16 @@ impl Server {
             downloader.run()
         });
 
+        let hl_log = log.clone();
+        let hl_log = hl_log.new(o!("name" => "handler"));
+        debug!(log, "spawning handler thread");
+
+        let handler_tx = tx.clone();
+        thread::spawn(move || {
+            let handler = HandlerThread::new(handler_tx, hl_log)?;
+            handler.run()
+        });
+
         let log = log.new(o!("name" => "server"));
 
         info!(log, "starting server");
@@ -44,7 +55,7 @@ impl Server {
 
         debug!(log, "parsing config");
         let config = Config::from_file(&self.config)?;
-        Ok(config.jobs.iter().map(|j| Job::from(j)).collect())
+        Ok(config.jobs)
     }
 
     fn enqueue_job(&self, job: &Job) -> Result<(), Error> {

@@ -5,14 +5,8 @@ use std::path::Path;
 use toml;
 
 #[derive(Debug, Deserialize)]
-pub(crate) struct ConfigJob {
-    url: String,
-    dest: String,
-}
-
-#[derive(Debug, Deserialize)]
 pub(crate) struct Config {
-    pub(crate) jobs: Vec<ConfigJob>,
+    pub(crate) jobs: Vec<Job>,
 }
 
 impl Config {
@@ -23,14 +17,5 @@ impl Config {
         let text = fs::read_to_string(filename)?;
         let deserialized: Config = toml::from_str(&text)?;
         Ok(deserialized)
-    }
-}
-
-impl<'a> From<&'a ConfigJob> for Job {
-    fn from(job: &'a ConfigJob) -> Job {
-        Job {
-            url: job.url.clone(),
-            dest: job.dest.clone(),
-        }
     }
 }

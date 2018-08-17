@@ -1,4 +1,6 @@
-#[derive(Debug, Serialize, Clone)]
+use serde_json;
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Job {
     pub(crate) url: String,
     pub(crate) dest: String,
@@ -13,5 +15,11 @@ impl Job {
             url: url.into(),
             dest: dest.into(),
         }
+    }
+}
+
+impl From<String> for Job {
+    fn from(s: String) -> Job {
+        serde_json::from_str(&s).expect("deserialising job")
     }
 }
