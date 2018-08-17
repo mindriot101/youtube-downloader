@@ -25,7 +25,6 @@ impl DownloadThread {
                 Ok(_) => {}
             }
         }
-        Ok(())
     }
 
     fn perform_work(&self, job: Job) -> Result<(), Error> {

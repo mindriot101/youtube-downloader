@@ -1,9 +1,6 @@
 extern crate zmq;
 #[macro_use]
 extern crate structopt;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
 extern crate youtube_downloader;
 #[macro_use]
 extern crate slog;
@@ -13,7 +10,7 @@ extern crate slog_term;
 use slog::Drain;
 use std::path::PathBuf;
 use structopt::StructOpt;
-use youtube_downloader::{job::Job, server::Server};
+use youtube_downloader::server::Server;
 
 #[derive(Debug, StructOpt)]
 struct Opts {

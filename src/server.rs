@@ -4,14 +4,13 @@ use failure::Error;
 use job::Job;
 use slog::Logger;
 use std::path::PathBuf;
-use std::sync::mpsc::{self, Receiver, Sender};
-use std::thread::{self, JoinHandle};
+use std::sync::mpsc::{self, Sender};
+use std::thread;
 use std::time::Duration;
 
 pub struct Server {
     config: PathBuf,
     sleep_time: u64,
-    downloader_handle: JoinHandle<Result<(), Error>>,
     tx: Sender<Job>,
     log: Logger,
 }
@@ -23,7 +22,7 @@ impl Server {
         let dl_log = log.clone();
         let dl_log = dl_log.new(o!("name" => "downloader"));
         debug!(log, "spawning download thread");
-        let downloader_handle = thread::spawn(move || {
+        thread::spawn(move || {
             let downloader = DownloadThread::new(rx, dl_log);
             downloader.run()
         });
@@ -34,7 +33,6 @@ impl Server {
         Server {
             config,
             sleep_time,
-            downloader_handle,
             tx,
             log,
         }
@@ -70,6 +68,5 @@ impl Server {
             }
             self.sleep();
         }
-        Ok(())
     }
 }
