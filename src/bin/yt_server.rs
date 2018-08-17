@@ -15,7 +15,7 @@ struct Opts {
     #[structopt(short = "c", long = "config", parse(from_os_str))]
     config: PathBuf,
     #[structopt(short = "s", long = "sleep-time", default_value = "86400")]
-    sleep_time: u32,
+    sleep_time: u64,
 }
 
 fn main() {

@@ -1,7 +1,7 @@
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct Job {
-    url: String,
-    dest: String,
+    pub(crate) url: String,
+    pub(crate) dest: String,
 }
 
 impl Job {
