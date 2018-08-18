@@ -16,9 +16,9 @@ slog-term = "2.4.0"
 slog-async = "2.3.0"
 
 [[bin]]
-name = "yt-add"
-path = "src/bin/yt_add.rs"
+name = "ytctl"
+path = "src/bin/ytctl.rs"
 
 [[bin]]
-name = "yt-server"
-path = "src/bin/yt_server.rs"
+name = "ytd"
+path = "src/bin/ytd.rs"
